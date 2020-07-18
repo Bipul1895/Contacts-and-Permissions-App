@@ -9,12 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private static boolean READ_CONTACTS_GRANTED = false;
 
     private ListView contactsListView;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,24 +63,29 @@ public class MainActivity extends AppCompatActivity {
             //After interacting with user, android returns result in onRequestPermissionsResult method
         }
         
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] projection = {ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
-                ContentResolver contentResolver = getContentResolver();
-                Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, projection, null, null, null);
+                if(READ_CONTACTS_GRANTED) {
+                    String[] projection = {ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
+                    ContentResolver contentResolver = getContentResolver();
+                    Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, projection, null, null, null);
 
-                if (cursor != null) {
-                    List<String> contacts = new ArrayList<>();
-                    while (cursor.moveToNext()) {
-                        contacts.add(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)));
+                    if (cursor != null) {
+                        List<String> contacts = new ArrayList<>();
+                        while (cursor.moveToNext()) {
+                            contacts.add(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)));
+                        }
+                        cursor.close();
+
+                        ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, R.layout.list_view_element, R.id.contacts_text_view, contacts);
+                        contactsListView.setAdapter(adapter);
+
                     }
-                    cursor.close();
-
-                    ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, R.layout.list_view_element, R.id.contacts_text_view, contacts);
-                    contactsListView.setAdapter(adapter);
-
+                }
+                else{
+                    Snackbar.make(view, "Permission has not been provided", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -90,20 +98,21 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onRequestPermissionsResult: starts");
 
         switch (requestCode){
-            case REQUEST_CODE_READ_CONTACTS:
+            case REQUEST_CODE_READ_CONTACTS: {
                 //This means that we are checking for permission related to accessing contacts
                 //If permission is denied, grantResults array is empty
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission is granted. Continue the action or workflow in your app.
                     Log.d(TAG, "onRequestPermissionsResult: permission granted!");
                     READ_CONTACTS_GRANTED = true;
-                }
-                else{
+                } else {
                     Log.d(TAG, "onRequestPermissionsResult: permission denied");
                     //Permission denied
                     // Explain to the user that the feature is unavailable because
                     // the features requires a permission that the user has denied.
                 }
+
+            }
         }
 
     }

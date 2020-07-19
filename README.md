@@ -1,5 +1,6 @@
 # Contacts-and-Permissions-App
-Asks user for permission to access contacts at run-time and dispays contacts list
+Asks user for permission to access contacts at run-time and dispays contacts list.
+
 Asks users to access contacts list. If allowed, contact list is diplayed in a
 listview otherwise snackbar is displayed notifying the user. Snackbar has an action 
 button which when clicked, opens an AlertDialog again asking for permission. 

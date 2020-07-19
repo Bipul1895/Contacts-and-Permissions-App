@@ -1,0 +1,22 @@
+We can use ActivityCompat.requestPermissions() and onRequestPermissionResult() method to display a
+dialog to user asking for permission. However, if user ticks "Do not ask again" checkbox and clicks
+"Deny" our method will no longer be able to open the AlertDialog. In that case we should redirect
+the user to the settings portion of the app so that user can grant permission from there.
+
+-------------------------------------------------------------------------------------------------
+
+But the question is how do we know if the user has ticked the checkbox?
+This is done using shouldShowRequestPermissionRationale() method of ActivityCompat.
+shouldShowRequestPermissionRationale() : Gets whether you should show UI with rationale before
+                                         requesting a permission
+
+Parameters :
+activity	Activity: The target activity.
+permission	String: A permission your app wants to request
+
+-------------------------------------------------------------------------------------------------
+
+Storing the state of permission "READ_CONTACTS_GRANTED" as field of MainActivity class turned out
+to be a bad idea. When user goes to settings screen, we have no way of knowing whether user granted
+permission there or not. It is actually better to use checkSelfPermission() method to check for
+permission.

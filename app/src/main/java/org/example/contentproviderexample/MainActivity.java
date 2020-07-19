@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ends");
     }
 
+    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult: starts");
@@ -135,11 +136,10 @@ public class MainActivity extends AppCompatActivity {
                     // Explain to the user that the feature is unavailable because
                     // the features requires a permission that the user has denied.
                 }
-
             }
         }
-
     }
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

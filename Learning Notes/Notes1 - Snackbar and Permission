@@ -19,4 +19,5 @@ permission	String: A permission your app wants to request
 Storing the state of permission "READ_CONTACTS_GRANTED" as field of MainActivity class turned out
 to be a bad idea. When user goes to settings screen, we have no way of knowing whether user granted
 permission there or not. It is actually better to use checkSelfPermission() method to check for
-permission.
+permission. Obviously, we do not need to call onRequestPermissionsResult() method anymore.
+Android calls it automatically after requestPermissions() method, if we override it.

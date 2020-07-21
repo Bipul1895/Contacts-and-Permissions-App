@@ -1,0 +1,27 @@
+SQLite Terminal :
+To start SQLite in Terminal window, navigate to directory in which your db exists.
+E.g. If name of db is test.db :
+SQLite3 test.db
+
+.schema : To know structure of all tables present in the db
+.table : To know the names of all tables present in the db
+.headers on : show attribute name while displaying query result
+
+Using wildcard : The LIKE operator is used in a WHERE clause to search for a specified pattern in
+                 a column. E.g. WHERE LIKE "%king%";
+
+Note : Put semicolon to end SQLite statements.
+
+Three commands which do not have semicolon int the end:
+1) Backup command : .backup test-backup1
+2)Restore command : .restore test-backup1
+3)Initial command : SQLite3 test.db
+
+SQLite Java :
+
+If you perform CREATE TABLE command to create a table that already exists in the db, runtime error
+will occur. To get rid of this error we can do : CREATE TABLE IF NOT EXISTS.
+
+
+
+
